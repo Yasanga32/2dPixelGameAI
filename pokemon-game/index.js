@@ -14,6 +14,7 @@ const playerImage = new Image()
 playerImage.src = './images/playerDown.png'
 
 const drawPlayer = () => {
+    if (!playerImage.complete) return
     c.drawImage(
         playerImage,
         0,
@@ -27,14 +28,35 @@ const drawPlayer = () => {
     )
 }
 
-image.onload = () => {
-    c.drawImage(image, -780, -560)
-    if (playerImage.complete) {
-        drawPlayer()
-    } else {
-        playerImage.onload = drawPlayer
+class Sprite {
+    constructor({ position, velocity, image }) {
+        this.position = position
+        this.velocity = velocity
+        this.image = image
+    }
+
+    draw() {
+        c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
+
+const background = new Sprite({
+    position: {
+        x: -785,
+        y: -560
+    },
+    image: image
+})
+
+
+
+function animate() {
+    window.requestAnimationFrame(animate)
+    background.draw()
+    drawPlayer()
+}
+
+animate()
 
 
 window.addEventListener('keydown', (e) => {
