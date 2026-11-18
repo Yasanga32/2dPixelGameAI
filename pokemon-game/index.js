@@ -1,15 +1,29 @@
 const canvas = document.querySelector('canvas')
-const c = canvas.gtContext('2d')
+const c = canvas.getContext('2d')
 
 canvas.width = 1024
 canvas.height = 576
 
-c.fillstyle = 'white'
-c.fillrect(0, 0, canvas.width, canvas.height)
+c.fillStyle = 'white'
+c.fillRect(0, 0, canvas.width, canvas.height)
 
 const image = new Image()
 image.src = './images/Pellet Town.png'
 
-c.drawImage('./images/Pellet Town.png')
+const playerImage = new Image()
+playerImage.src = './images/playerDown.png'
 
-console.log(c)
+image.onload = () => {
+    c.drawImage(image, -750, -550)
+    if (playerImage.complete) {
+        c.drawImage(playerImage, 0, 0)
+    } else {
+        playerImage.onload = () => {
+            c.drawImage(playerImage, 0, 0)
+        }
+    }
+}
+
+
+
+
