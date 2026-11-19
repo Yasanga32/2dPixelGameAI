@@ -12,29 +12,36 @@ for (let i = 0; i < collisions.length; i += 70) {
 class Boundary {
     static width = 48
     static height = 48
-    constructor(position) {
+    constructor({ position }) {
         this.position = position
         this.width = 48 //because we zoomed to 400% so normal pixel is 12px it becomes 12*4 = 48
         this.height = 48
 
     }
     draw() {
-        c.fillStyle = 'red'
+        c.fillStyle = 'rgba(255, 0, 0, 0.5)'
         c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
 }
 
 const boundaries = []
+const offset = {
+    x: -785,
+    y: -560
+}
 
-collisionsMap.forEach(row, i) => {
-    row.forEach(symbol, j)=> {
-        boundaries.push(new Boundary({
-            position: {
-                x: j * Boundary.width,
-                y: i * Boundary.height
-            }
-        }))
-    }
+collisionsMap.forEach((row, i) => {
+    row.forEach((symbol, j) => {
+        if (symbol === 1025)
+            boundaries.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                })
+            )
+    })
 })
 
 c.fillStyle = 'white'
@@ -75,11 +82,13 @@ class Sprite {
 
 const background = new Sprite({
     position: {
-        x: -785,
-        y: -560
+        x: offset.x,
+        y: offset.y
     },
     image: image
 })
+
+const movables = [background, ...boundaries]
 
 const keys = {
     w: {
@@ -101,16 +110,27 @@ let lastKey = ''
 function animate() {
     window.requestAnimationFrame(animate)
     background.draw()
+    boundaries.forEach(boundary => {
+        boundary.draw()
+    })
     drawPlayer()
 
     if (keys.w.pressed && lastKey === 'w') {
-        background.position.y += 3
+        movables.forEach((movable) => {
+            movable.position.y += 3
+        })
     } else if (keys.a.pressed && lastKey === 'a') {
-        background.position.x += 3
+        movables.forEach((movable) => {
+            movable.position.x += 3
+        })
     } else if (keys.s.pressed && lastKey === 's') {
-        background.position.y -= 3
+        movables.forEach((movable) => {
+            movable.position.y -= 3
+        })
     } else if (keys.d.pressed && lastKey === 'd') {
-        background.position.x -= 3
+        movables.forEach((movable) => {
+            movable.position.x -= 3
+        })
     }
 }
 
