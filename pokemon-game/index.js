@@ -27,7 +27,7 @@ class Boundary {
 const boundaries = []
 const offset = {
     x: -735,
-    y: -560
+    y: -650
 }
 
 collisionsMap.forEach((row, i) => {
@@ -144,35 +144,112 @@ function animate() {
     boundaries.forEach(boundary => {
         boundary.draw()
     })
+
     testBoundary.draw()
     player.draw()
 
-    if (
-        rectangularCollision({
-            rectangle1: player,
-            rectangle2: testBoundary
-        })
-    ) {
-        console.log('colliding')
-    }
+    let moving = true
 
     if (keys.w.pressed && lastKey === 'w') {
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: {
+                        ...boundary,
+                        position: {
+                            x: boundary.position.x,
+                            y: boundary.position.y + 3
+                        }
+                    }
+                })
+            ) {
+                console.log('colliding')
+                moving = false
+                break
+            }
+        }
 
-        movables.forEach((movable) => {
-            movable.position.y += 3
-        })
+        if (moving)
+            movables.forEach((movable) => {
+                movable.position.y += 3
+            })
     } else if (keys.a.pressed && lastKey === 'a') {
-        movables.forEach((movable) => {
-            movable.position.x += 3
-        })
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: {
+                        ...boundary,
+                        position: {
+                            x: boundary.position.x + 3,
+                            y: boundary.position.y
+                        }
+                    }
+                })
+            ) {
+                console.log('colliding')
+                moving = false
+                break
+            }
+        }
+
+        if (moving)
+            movables.forEach((movable) => {
+                movable.position.x += 3
+            })
     } else if (keys.s.pressed && lastKey === 's') {
-        movables.forEach((movable) => {
-            movable.position.y -= 3
-        })
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: {
+                        ...boundary,
+                        position: {
+                            x: boundary.position.x,
+                            y: boundary.position.y - 3
+                        }
+                    }
+                })
+            ) {
+                console.log('colliding')
+                moving = false
+                break
+            }
+        }
+
+        if (moving)
+            movables.forEach((movable) => {
+                movable.position.y -= 3
+            })
     } else if (keys.d.pressed && lastKey === 'd') {
-        movables.forEach((movable) => {
-            movable.position.x -= 3
-        })
+        for (let i = 0; i < boundaries.length; i++) {
+            const boundary = boundaries[i]
+            if (
+                rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: {
+                        ...boundary,
+                        position: {
+                            x: boundary.position.x - 3,
+                            y: boundary.position.y
+                        }
+                    }
+                })
+            ) {
+                console.log('colliding')
+                moving = false
+                break
+            }
+        }
+
+        if (moving)
+            movables.forEach((movable) => {
+                movable.position.x -= 3
+            })
     }
 }
 
