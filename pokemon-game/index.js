@@ -26,7 +26,7 @@ class Boundary {
 
 const boundaries = []
 const offset = {
-    x: -785,
+    x: -735,
     y: -560
 }
 
@@ -73,12 +73,26 @@ class Sprite {
         this.position = position
         this.velocity = velocity
         this.image = image
+
+        this.image.onload = () => {
+            this.width = this.image.width / this.frame.max
+            this.height = this.image.height / this.frame.max
+        }
+
     }
 
     draw() {
         c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
+
+const player = new Sprite({
+    position: {
+        x: canvas.width / 2 - this.image.width / 4 / 2,
+        y: canvas.height / 2 - this.image.height / 2
+    },
+    image: playerImage
+})
 
 const background = new Sprite({
     position: {
@@ -107,15 +121,40 @@ const keys = {
 
 let lastKey = ''
 
+const testBoundary = new Boundary({
+    position: {
+        x: 400,
+        y: 400
+    }
+})
+
+const movables = [background, testBoundary]
+
+function rectangularCollision({ rectangle1, rectangle2 }) {
+    return (
+        rectangle1.position.x + player.width >= rectangle2.position.x &&
+        rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+        rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
+        rectangle1.position.y + player.height >= rectangle2.position.y
+    )
+}
 function animate() {
     window.requestAnimationFrame(animate)
     background.draw()
-    boundaries.forEach(boundary => {
-        boundary.draw()
-    })
+    // boundaries.forEach(boundary => {
+    //     boundary.draw()
+    // })
+    testBoundary.draw()
+    player.draw()
     drawPlayer()
 
+    if (
+    ) {
+
+    }
+
     if (keys.w.pressed && lastKey === 'w') {
+
         movables.forEach((movable) => {
             movable.position.y += 3
         })
