@@ -115,7 +115,6 @@ function animate() {
 
     testBoundary.draw()
     player.draw()
-    foregroundImage
     foreground.draw()
 
     let moving = true
@@ -228,18 +227,22 @@ animate()
 window.addEventListener('keydown', (e) => {
     switch (e.key.toLowerCase()) {
         case 'w':
+        case 'arrowup':
             keys.w.pressed = true
             lastKey = 'w'
             break
         case 'a':
+        case 'arrowleft':
             keys.a.pressed = true
             lastKey = 'a'
             break
         case 's':
+        case 'arrowdown':
             keys.s.pressed = true
             lastKey = 's'
             break
         case 'd':
+        case 'arrowright':
             keys.d.pressed = true
             lastKey = 'd'
             break
@@ -249,15 +252,19 @@ window.addEventListener('keydown', (e) => {
 window.addEventListener('keyup', (e) => {
     switch (e.key.toLowerCase()) {
         case 'w':
+        case 'arrowup':
             keys.w.pressed = false
             break
         case 'a':
+        case 'arrowleft':
             keys.a.pressed = false
             break
         case 's':
+        case 'arrowdown':
             keys.s.pressed = false
             break
         case 'd':
+        case 'arrowright':
             keys.d.pressed = false
             break
     }
